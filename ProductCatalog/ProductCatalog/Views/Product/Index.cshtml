@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ProductCatalog.Models.Product>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Product Catalog</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 40px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .product {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 15px;
+            width: 300px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Product Catalog</h1>
+
+    @foreach (var product in Model)
+    {
+        <div class="product">
+
+            <h2>@product.Name</h2>
+
+            <p>
+                <strong>ID:</strong>
+                @product.Id
+            </p>
+
+            <p>
+                @product.Description
+            </p>
+
+            <p class="price">
+                Price: ₹@product.Price
+            </p>
+
+        </div>
+    }
+
+</body>
+</html>

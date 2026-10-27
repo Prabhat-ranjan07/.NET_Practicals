@@ -1,0 +1,139 @@
+﻿@model IEnumerable<InventoryManagement.Models.Product>
+@using System.Linq
+
+@{
+    ViewBag.Title = "Products";
+    var products = Model ?? Enumerable.Empty<InventoryManagement.Models.Product>();
+}
+
+<div class="page-heading">
+    <h2>Product Management</h2>
+    <p class="text-muted">Manage your inventory, product quantities, and suppliers.</p>
+</div>
+
+<div class="content-card">
+    <div class="row">
+        <div class="col-sm-8">
+            <h3 style="margin-top: 5px;">All Products</h3>
+            <p class="text-muted">View and manage your available products.</p>
+        </div>
+
+        <div class="col-sm-4 text-right">
+            @Html.ActionLink("+ Add New Product", "Create", "Products",
+                     null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-6">
+            <input type="text"
+                   id="productSearch"
+                   class="form-control"
+                   placeholder="Search by product, category, or supplier..." />
+        </div>
+
+        <div class="col-md-6 text-right">
+            <span class="text-muted">
+                Total Products: <strong id="productCount">@products.Count()</strong>
+            </span>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="productsTable">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Supplier</th>
+                    <th style="min-width: 180px;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in products)
+                {
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td><strong>@item.ProductName</strong></td>
+                        <td>@item.Category</td>
+                        <td>
+                            @if (item.Quantity == 0)
+                            {
+                                <span class="label label-danger">Out of Stock</span>
+                            }
+                            else if (item.Quantity <= 5)
+                            {
+                                <span class="label label-warning">@item.Quantity (Low Stock)</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success">@item.Quantity</span>
+                            }
+                        </td>
+                        <td>₹@item.Price.ToString("N2")</td>
+                        <td>@item.SupplierName</td>
+                        <td>
+                            @Html.ActionLink("View", "Details", "Products",
+                                     new { id = item.ProductId },
+                                     new { @class = "btn btn-info btn-xs" })
+
+                            @Html.ActionLink("Edit", "Edit", "Products",
+                                     new { id = item.ProductId },
+                                     new { @class = "btn btn-primary btn-xs" })
+
+                            @Html.ActionLink("Delete", "Delete", "Products",
+                                     new { id = item.ProductId },
+                                     new { @class = "btn btn-danger btn-xs" })
+                        </td>
+                    </tr>
+                }
+
+                <tr id="noProductsMessage" style="display:none;">
+                    <td colspan="7" class="text-center text-muted">
+                        No matching products found.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    @if (!products.Any())
+    {
+        <div class="text-center" style="padding: 30px;">
+            <h4>No products added yet</h4>
+            <p class="text-muted">Start by adding your first inventory product.</p>
+
+            @Html.ActionLink("Add Your First Product", "Create", "Products",
+                     null, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script>$(document).ready(function () {
+            $("#productSearch").on("keyup", function () {
+                var searchText = $(this).val().toLowerCase();
+                var visibleCount = 0;
+
+                $("#productsTable tbody tr").not("#noProductsMessage").each(function () {
+                    var rowText = $(this).text().toLowerCase();
+                    var matches = rowText.indexOf(searchText) !== -1;
+
+                    $(this).toggle(matches);
+
+                    if (matches) {
+                        visibleCount++;
+                    }
+                });
+
+                $("#noProductsMessage").toggle(visibleCount === 0);
+                $("#productCount").text(visibleCount);
+            });
+        });</script>
+}

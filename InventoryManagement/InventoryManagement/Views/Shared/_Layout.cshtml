@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Inventory Management</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            background-color: #f5f7fb;
+            font-family: Arial, sans-serif;
+            color: #263238;
+        }
+
+        .navbar {
+            background-color: #172554;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 0;
+        }
+
+        .navbar-inverse .navbar-brand,
+        .navbar-inverse .navbar-nav > li > a {
+            color: #ffffff;
+        }
+
+        .navbar-inverse .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar-inverse .navbar-nav > li > a:hover {
+            background-color: #263b75;
+        }
+
+        .page-container {
+            padding-top: 30px;
+            padding-bottom: 40px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+            .page-heading h2 {
+                font-weight: bold;
+                color: #172554;
+            }
+
+        .content-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        .footer {
+            margin-top: 35px;
+            padding: 20px 0;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn {
+            border-radius: 5px;
+        }
+
+        .table thead {
+            background-color: #eaf0ff;
+        }
+
+        .table th {
+            color: #172554;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.ActionLink("Inventory Management", "Index", "Products",
+                         null, new { @class = "navbar-brand" })
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Dashboard", "Index", "Products")</li>
+                <li>@Html.ActionLink("Products", "Index", "Products")</li>
+                <li>@Html.ActionLink("Add Product", "Create", "Products")</li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container page-container">
+        @RenderBody()
+
+        <footer class="footer">
+            <p>&copy; @DateTime.Now.Year Inventory Management System</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
